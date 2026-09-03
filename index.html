@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="DIRLOSAN Engineering and Simulation — product design, CFD, FEA and engineering consulting." />
+  <title>DIRLOSAN — Engineering and Simulation</title>
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('dirlosan-theme');
+        const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      } catch (_) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="intro-wipe" aria-hidden="true">
+    <div class="intro-mark"><span>DIRLOSAN</span><i></i><small>ENGINEERING / SIMULATION</small></div>
+    <div class="intro-panel intro-panel-a"></div>
+    <div class="intro-panel intro-panel-b"></div>
+  </div>
+
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="page-progress" aria-hidden="true"><span></span></div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" data-i18n-aria="brandHome" aria-label="DIRLOSAN home">
+      <span class="logo-plate"><img src="assets/dirlosan-logo-transparent.png" alt="DIRLOSAN Engineering and Simulation" /></span>
+    </a>
+
+    <div class="header-actions">
+      <nav class="desktop-nav" aria-label="Primary navigation" data-i18n-aria="primaryNav">
+        <a href="#services" data-i18n="navServices">Services</a>
+        <a href="#what-we-do" data-i18n="navWhat">What we do</a>
+        <a href="#process" data-i18n="navProcess">Process</a>
+        <a href="#projects" data-i18n="navProjects">Projects</a>
+        <a href="#testimonials" data-i18n="navTestimonials">Testimonials</a>
+        <a href="#industries" data-i18n="navIndustries">Industries</a>
+        <a href="#estimator" data-i18n="navEstimate">Estimate</a>
+        <a href="#who-we-are" data-i18n="navWho">Who we are</a>
+        <a href="#about" data-i18n="navAbout">About</a>
+        <a href="#faq" data-i18n="navFaq">FAQ</a>
+        <a class="nav-cta magnetic" href="#contact" data-i18n="navStart">Start a project</a>
+      </nav>
+
+      <div class="utility-controls">
+        <div class="language-switcher">
+          <button class="utility-button language-button" type="button" aria-haspopup="true" aria-expanded="false" data-i18n-aria="languageLabel" aria-label="Choose language">
+            <span class="current-language">EN</span>
+            <i aria-hidden="true">⌄</i>
+          </button>
+          <div class="language-menu" role="menu" aria-hidden="true">
+            <button type="button" role="menuitem" data-lang="en"><span>EN</span>English</button>
+            <button type="button" role="menuitem" data-lang="ro"><span>RO</span>Română</button>
+            <button type="button" role="menuitem" data-lang="de"><span>DE</span>Deutsch</button>
+          </div>
+        </div>
+
+        <button class="utility-button theme-toggle" type="button" data-i18n-aria="themeDark" aria-label="Switch to dark mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle class="sun-core" cx="12" cy="12" r="3.2" />
+            <path class="sun-rays" d="M12 2.2v2.1M12 19.7v2.1M2.2 12h2.1M19.7 12h2.1M5.1 5.1l1.5 1.5M17.4 17.4l1.5 1.5M18.9 5.1l-1.5 1.5M6.6 17.4l-1.5 1.5" />
+            <path class="moon-shape" d="M18.2 15.3A7.4 7.4 0 0 1 8.7 5.8 7.4 7.4 0 1 0 18.2 15.3Z" />
+          </svg>
+        </button>
+      </div>
+
+      <button class="menu-button" data-i18n-aria="openMenu" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" aria-hidden="true">
+    <a href="#services" data-i18n="navServices">Services</a>
+    <a href="#what-we-do" data-i18n="navWhat">What we do</a>
+    <a href="#process" data-i18n="navProcess">Process</a>
+    <a href="#projects" data-i18n="navProjects">Projects</a>
+    <a href="#testimonials" data-i18n="navTestimonials">Testimonials</a>
+    <a href="#industries" data-i18n="navIndustries">Industries</a>
+    <a href="#estimator" data-i18n="navEstimate">Estimate</a>
+    <a href="#who-we-are" data-i18n="navWho">Who we are</a>
+    <a href="#about" data-i18n="navAbout">About</a>
+    <a href="#faq" data-i18n="navFaq">FAQ</a>
+    <a href="#contact" data-i18n="navStart">Start a project</a>
+    <p class="mobile-menu-note" data-i18n="mobileNote">Engineering, simulation and product development.</p>
+  </div>
+
+  <main>
+    <section class="hero section-pad">
+      <canvas id="meshCanvas" aria-hidden="true"></canvas>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <svg class="hero-streamlines" viewBox="0 0 1400 740" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="flowA" x1="0" x2="1">
+            <stop class="flow-navy-stop" offset="0" stop-opacity="0"/>
+            <stop class="flow-navy-stop" offset=".2" stop-opacity=".48"/>
+            <stop class="flow-red-stop" offset=".77" stop-opacity=".5"/>
+            <stop class="flow-red-stop" offset="1" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#flowA)" stroke-width="1.5">
+          <path d="M-60 570 C260 410 420 690 735 555 S1120 390 1470 470"/>
+          <path d="M-70 595 C260 435 430 710 742 576 S1128 412 1470 492"/>
+          <path d="M-80 620 C260 460 440 730 748 597 S1134 434 1470 514"/>
+          <path d="M-90 645 C260 485 450 750 755 618 S1142 456 1470 536"/>
+        </g>
+      </svg>
+
+      <div class="hero-copy reveal hero-reveal">
+        <p class="eyebrow" data-i18n="heroEyebrow">Engineering · Simulation · Product Development</p>
+        <h1 data-i18n-html="heroTitle">From concept to <span class="text-outline">validated product.</span></h1>
+        <p class="hero-intro" data-i18n="heroIntro">Product design, CFD, FEA and engineering consulting from the first sketch through simulation, refinement and development.</p>
+        <div class="hero-actions">
+          <a class="button button-primary magnetic" href="#contact"><span data-i18n="heroStart">Start a project</span><i>↗</i></a>
+          <a class="button button-ghost magnetic" href="#services"><span data-i18n="heroExplore">Explore services</span><i>↓</i></a>
+        </div>
+      </div>
+
+      <div class="hero-index" aria-hidden="true">
+        <span>01</span><div></div><span data-i18n="heroIndex">ENGINEERED WITH INTENT</span>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <section class="what-we-do" id="what-we-do">
+      <div class="what-sticky section-pad">
+        <div class="what-heading">
+          <p class="eyebrow" data-i18n="whatEyebrow">What we do</p>
+          <h2 data-i18n-html="whatTitle">Engineering from <span>geometry to evidence.</span></h2>
+          <p data-i18n="whatIntro">Design, analysis and automation are handled as one connected engineering workflow.</p>
+
+          <div class="what-stage-copy" aria-live="polite">
+            <div class="what-stage-panel active" data-stage-copy="0">
+              <span>01 / 03</span>
+              <strong data-i18n="whatGroup1">Design &amp; document</strong>
+              <p data-i18n="whatGroup1Desc">Turn requirements into geometry, drawings and production-ready engineering documentation.</p>
+            </div>
+            <div class="what-stage-panel" data-stage-copy="1">
+              <span>02 / 03</span>
+              <strong data-i18n="whatGroup2">Simulate &amp; validate</strong>
+              <p data-i18n="whatGroup2Desc">Use CFD, FEA, thermal and vacuum analysis to find problems before hardware is committed.</p>
+            </div>
+            <div class="what-stage-panel" data-stage-copy="2">
+              <span>03 / 03</span>
+              <strong data-i18n="whatGroup3">Automate &amp; integrate</strong>
+              <p data-i18n="whatGroup3Desc">Connect mechanical design with controls, robotics and engineering software.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="capability-stage" data-i18n-aria="whatAria" aria-label="DIRLOSAN engineering capabilities">
+          <div class="capability-cluster active" data-capability-group="0">
+            <h3 class="cluster-title" data-i18n="whatGroup1">Design &amp; document</h3>
+            <article class="capability-chip" style="--x:46%;--y:17%;--r:-2deg"><span>01</span><strong data-i18n="what1">Concept-to-production product design</strong><small>PRODUCT</small></article>
+            <article class="capability-chip" style="--x:70%;--y:12%;--r:2deg"><span>02</span><strong data-i18n="what2">3D CAD modelling</strong><small>CAD</small></article>
+            <article class="capability-chip" style="--x:57%;--y:36%;--r:1deg"><span>03</span><strong data-i18n="what3">Manufacturing drawings</strong><small>DRAWINGS</small></article>
+            <article class="capability-chip" style="--x:79%;--y:34%;--r:-2deg"><span>04</span><strong data-i18n="what4">Assembly &amp; welding drawings</strong><small>FABRICATION</small></article>
+            <article class="capability-chip" style="--x:45%;--y:61%;--r:2deg"><span>05</span><strong data-i18n="what5">P&amp;ID documentation</strong><small>SYSTEMS</small></article>
+            <article class="capability-chip" style="--x:69%;--y:64%;--r:-1deg"><span>06</span><strong data-i18n="what6">Bills of materials &amp; supplier-ready documentation</strong><small>BOM</small></article>
+          </div>
+
+          <div class="capability-cluster" data-capability-group="1">
+            <h3 class="cluster-title" data-i18n="whatGroup2">Simulate &amp; validate</h3>
+            <article class="capability-chip accent" style="--x:48%;--y:14%;--r:2deg"><span>07</span><strong data-i18n="what7">CFD flow analysis</strong><small>CFD</small></article>
+            <article class="capability-chip" style="--x:73%;--y:18%;--r:-2deg"><span>08</span><strong data-i18n="what8">Thermal simulation</strong><small>THERMAL</small></article>
+            <article class="capability-chip accent" style="--x:58%;--y:38%;--r:-1deg"><span>09</span><strong data-i18n="what9">Structural FEA</strong><small>FEA</small></article>
+            <article class="capability-chip" style="--x:80%;--y:41%;--r:2deg"><span>10</span><strong data-i18n="what10">Vacuum analysis</strong><small>VACUUM</small></article>
+            <article class="capability-chip" style="--x:46%;--y:64%;--r:-2deg"><span>11</span><strong data-i18n="what11">Simulation-led design optimisation</strong><small>OPTIMISE</small></article>
+            <article class="capability-chip" style="--x:70%;--y:67%;--r:1deg"><span>12</span><strong data-i18n="what12">Cooling systems engineering</strong><small>COOLING</small></article>
+          </div>
+
+          <div class="capability-cluster" data-capability-group="2">
+            <h3 class="cluster-title" data-i18n="whatGroup3">Automate &amp; integrate</h3>
+            <article class="capability-chip" style="--x:47%;--y:16%;--r:-1deg"><span>13</span><strong data-i18n="what13">Industrial machinery &amp; frame design</strong><small>MACHINERY</small></article>
+            <article class="capability-chip" style="--x:72%;--y:12%;--r:2deg"><span>14</span><strong data-i18n="what14">Robotics &amp; automation design</strong><small>ROBOTICS</small></article>
+            <article class="capability-chip" style="--x:58%;--y:37%;--r:2deg"><span>15</span><strong data-i18n="what15">Siemens PLC programming</strong><small>PLC</small></article>
+            <article class="capability-chip" style="--x:80%;--y:38%;--r:-2deg"><span>16</span><strong data-i18n="what16">ABB &amp; KUKA robot simulation</strong><small>ROBOTICS</small></article>
+            <article class="capability-chip" style="--x:46%;--y:63%;--r:1deg"><span>17</span><strong data-i18n="what17">Python engineering automation</strong><small>PYTHON</small></article>
+            <article class="capability-chip" style="--x:70%;--y:66%;--r:-1deg"><span>18</span><strong data-i18n="what18">MATLAB engineering analysis</strong><small>MATLAB</small></article>
+          </div>
+        </div>
+
+        <div class="what-stage-nav" aria-hidden="true">
+          <div class="what-stage-step active" data-stage-step="0"><span>01</span><b data-i18n="whatGroup1">Design &amp; document</b></div>
+          <div class="what-stage-step" data-stage-step="1"><span>02</span><b data-i18n="whatGroup2">Simulate &amp; validate</b></div>
+          <div class="what-stage-step" data-stage-step="2"><span>03</span><b data-i18n="whatGroup3">Automate &amp; integrate</b></div>
+        </div>
+        <div class="what-progress" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+
+    <section class="services section-pad" id="services">
+      <div class="section-orbit orbit-a" aria-hidden="true"></div>
+      <div class="section-heading reveal">
+        <p class="eyebrow" data-i18n="capabilities">Capabilities</p>
+        <h2 data-i18n-html="capabilitiesTitle">Design it. Simulate it.<br>Make the next decision with evidence.</h2>
+      </div>
+
+      <div class="services-layout">
+        <div class="service-visual tilt-card" aria-hidden="true">
+          <div class="visual-scan"></div>
+          <div class="service-cycle" aria-hidden="true"><div class="service-cycle-dots"><i class="active"></i><i></i><i></i><i></i></div><span class="service-cycle-bar"><b></b></span></div>
+          <div class="visual-stage" data-visual="0">
+            <svg class="cad-visual" viewBox="0 0 640 640">
+              <g class="construction" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path class="draw" d="M170 414 L228 202 L430 160 L502 288 L448 474 L256 512 Z"/>
+                <path class="draw delay-1" d="M228 202 L256 512 M430 160 L448 474 M170 414 L502 288"/>
+                <path class="draw delay-1" d="M228 202 L430 160 L376 330 L170 414 Z"/>
+                <circle class="draw delay-2" cx="344" cy="340" r="78"/>
+                <circle class="draw delay-3" cx="344" cy="340" r="32"/>
+              </g>
+              <g class="dimension-lines" fill="none" stroke="currentColor" stroke-dasharray="6 8">
+                <path d="M140 528 H470"/>
+                <path d="M126 196 V514"/>
+                <path d="M502 288 H566"/>
+                <path d="M448 474 H544"/>
+              </g>
+              <g class="dimension-ticks" fill="currentColor">
+                <circle cx="170" cy="414" r="4"/><circle cx="228" cy="202" r="4"/><circle cx="430" cy="160" r="4"/><circle cx="502" cy="288" r="4"/><circle cx="448" cy="474" r="4"/><circle cx="256" cy="512" r="4"/>
+              </g>
+              <g class="dimension-labels" fill="currentColor">
+                <text x="276" y="548">220</text>
+                <text x="94" y="366" transform="rotate(-90 94 366)">185</text>
+                <text x="520" y="274">R42</text>
+                <text x="348" y="334">Ø64</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="visual-stage" data-visual="1">
+            <svg class="cfd-visual" viewBox="0 0 640 640">
+              <defs>
+                <linearGradient id="cfdBody" x1="0" x2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".06"/><stop offset=".52" stop-color="currentColor" stop-opacity=".14"/><stop offset="1" stop-color="currentColor" stop-opacity=".04"/></linearGradient>
+                <radialGradient id="pressureHigh"><stop offset="0" stop-color="var(--red)" stop-opacity=".36"/><stop offset="1" stop-color="var(--red)" stop-opacity="0"/></radialGradient>
+                <radialGradient id="pressureLow"><stop offset="0" stop-color="var(--navy)" stop-opacity=".28"/><stop offset="1" stop-color="var(--navy)" stop-opacity="0"/></radialGradient>
+                <marker id="velocityArrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="currentColor"/></marker>
+              </defs>
+              <g class="cfd-grid" fill="none" stroke="currentColor">
+                <path d="M92 118V524M166 118V524M240 118V524M314 118V524M388 118V524M462 118V524M536 118V524"/>
+                <path d="M72 174H565M72 246H565M72 318H565M72 390H565M72 462H565"/>
+              </g>
+              <ellipse class="pressure-field pressure-high" cx="210" cy="325" rx="126" ry="118" fill="url(#pressureHigh)"/>
+              <ellipse class="pressure-field pressure-low" cx="430" cy="285" rx="166" ry="132" fill="url(#pressureLow)"/>
+              <path class="cfd-body" d="M164 322 C240 250 347 235 493 286 C456 310 430 334 403 365 C316 405 229 388 164 340 Z" fill="url(#cfdBody)"/>
+              <path class="cfd-body-edge" d="M164 322 C240 250 347 235 493 286 C456 310 430 334 403 365 C316 405 229 388 164 340 Z"/>
+              <g class="flow-lines complex" fill="none">
+                <path d="M-28 154 C118 148 196 158 250 194 C331 248 405 230 676 142"/>
+                <path d="M-30 188 C116 182 191 190 250 218 C335 258 424 245 680 180"/>
+                <path d="M-30 222 C115 217 186 221 257 245 C333 271 430 268 680 226"/>
+                <path d="M-30 256 C116 250 185 253 270 270 C342 285 439 286 680 269"/>
+                <path d="M-30 290 C120 287 190 286 281 292 C356 297 447 302 680 304"/>
+                <path d="M-30 324 C120 324 180 323 281 320 C355 317 453 322 680 335"/>
+                <path d="M-30 358 C121 361 188 362 281 349 C354 338 453 344 680 371"/>
+                <path d="M-30 392 C116 398 185 397 270 378 C342 362 439 368 680 414"/>
+                <path d="M-30 426 C115 432 186 428 257 405 C333 379 430 389 680 458"/>
+                <path d="M-30 460 C116 466 191 458 250 432 C335 394 424 415 680 500"/>
+                <path d="M-28 494 C118 501 196 487 250 456 C331 409 405 437 676 538"/>
+              </g>
+              <g class="wake-vortices" fill="none" stroke="var(--red)">
+                <path d="M462 334 C520 307 555 335 530 368 C508 397 470 376 489 349 C506 325 540 348 520 367"/>
+                <path d="M496 382 C552 362 582 393 555 421 C530 447 497 423 517 401 C534 383 560 402 543 418"/>
+              </g>
+              <g class="velocity-vectors" fill="none" stroke="currentColor" marker-end="url(#velocityArrow)">
+                <path d="M104 210h54"/><path d="M104 278h68"/><path d="M104 348h74"/><path d="M106 418h58"/>
+                <path d="M522 218h42"/><path d="M530 294h58"/><path d="M528 445h40"/>
+              </g>
+              <g class="cfd-labels" fill="currentColor"><text x="104" y="198">V∞</text><text x="178" y="306">P+</text><text x="410" y="252">P−</text><text x="493" y="468">WAKE</text></g>
+            </svg>
+          </div>
+
+          <div class="visual-stage" data-visual="2">
+            <canvas id="feaCanvas"></canvas>
+          </div>
+
+          <div class="visual-stage" data-visual="3">
+            <svg class="consulting-chart" viewBox="0 0 640 640">
+              <defs>
+                <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="currentColor" stop-opacity=".18"/>
+                  <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g class="chart-grid" fill="none" stroke="currentColor">
+                <path d="M124 456 H530"/>
+                <path d="M124 384 H530"/>
+                <path d="M124 312 H530"/>
+                <path d="M124 240 H530"/>
+                <path d="M124 168 H530"/>
+                <path d="M124 160 V486"/>
+              </g>
+              <path class="chart-area" d="M124 456 L182 418 L246 392 L322 334 L402 282 L476 228 L530 196 L530 456 Z"/>
+              <path class="chart-line" d="M124 456 L182 418 L246 392 L322 334 L402 282 L476 228 L530 196"/>
+              <g class="chart-points" fill="currentColor">
+                <circle cx="182" cy="418" r="7"/><circle cx="246" cy="392" r="7"/><circle cx="322" cy="334" r="7"/><circle cx="402" cy="282" r="7"/><circle cx="476" cy="228" r="7"/><circle cx="530" cy="196" r="7"/>
+              </g>
+              <g class="chart-notes">
+                <g transform="translate(162 434)"><rect width="110" height="34" rx="17"/><text x="55" y="22" data-i18n="consultDefine">DEFINE</text></g>
+                <g transform="translate(268 280)"><rect width="126" height="34" rx="17"/><text x="63" y="22" data-i18n="consultCompare">COMPARE</text></g>
+                <g transform="translate(420 170)"><rect width="110" height="34" rx="17"/><text x="55" y="22" data-i18n="consultDecide">DECIDE</text></g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="service-list">
+          <article class="service active reveal" data-service="0">
+            <span class="service-no">01</span>
+            <div><h3 data-i18n="serviceDesign">Complete product design</h3><p data-i18n="serviceDesignDesc">From early concepts and CAD development through detailed engineering, analysis and design refinement.</p></div>
+            <span class="service-arrow">↗</span>
+          </article>
+          <article class="service reveal" data-service="1">
+            <span class="service-no">02</span>
+            <div><h3>CFD</h3><p data-i18n="serviceCfdDesc">Computational fluid dynamics for airflow, thermal behaviour, pressure losses and fluid-system performance.</p></div>
+            <span class="service-arrow">↗</span>
+          </article>
+          <article class="service reveal" data-service="2">
+            <span class="service-no">03</span>
+            <div><h3>FEA</h3><p data-i18n="serviceFeaDesc">Structural simulation for stress, deformation, stiffness, stability and design optimisation.</p></div>
+            <span class="service-arrow">↗</span>
+          </article>
+          <article class="service reveal" data-service="3">
+            <span class="service-no">04</span>
+            <div><h3 data-i18n="serviceConsulting">Engineering consulting</h3><p data-i18n="serviceConsultingDesc">Independent engineering support for design decisions, simulation strategy, technical problems and product development.</p></div>
+            <span class="service-arrow">↗</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="process section-pad" id="process">
+      <div class="section-heading compact reveal">
+        <p class="eyebrow" data-i18n="processEyebrow">A clear development loop</p>
+        <h2 data-i18n="processTitle">Concept → Design → Simulate → Validate → Refine</h2>
+      </div>
+      <div class="process-track" data-i18n-aria="processAria" aria-label="Engineering process">
+        <div class="track-line"><span></span></div>
+        <div class="process-step reveal"><b>01</b><span data-i18n="processConcept">Concept</span><p data-i18n="processConceptDesc">Frame the requirement and the real engineering constraints.</p></div>
+        <div class="process-step reveal"><b>02</b><span data-i18n="processDesign">Design</span><p data-i18n="processDesignDesc">Build the geometry, architecture and detail needed to evaluate it.</p></div>
+        <div class="process-step reveal"><b>03</b><span data-i18n="processSimulate">Simulate</span><p data-i18n="processSimulateDesc">Use CFD or FEA to test the behaviour before committing to hardware.</p></div>
+        <div class="process-step reveal"><b>04</b><span data-i18n="processValidate">Validate</span><p data-i18n="processValidateDesc">Check the result against the design intent and practical limits.</p></div>
+        <div class="process-step reveal"><b>05</b><span data-i18n="processRefine">Refine</span><p data-i18n="processRefineDesc">Turn the findings into a better product and repeat where needed.</p></div>
+      </div>
+    </section>
+
+    <section class="projects section-pad" id="projects">
+      <div class="section-heading reveal">
+        <p class="eyebrow" data-i18n="projectsEyebrow">Selected engineering work</p>
+        <h2 data-i18n="projectsTitle">Projects that span design, simulation and automation.</h2>
+        <p class="projects-intro" data-i18n="projectsIntro">No client-confidential imagery is shown here. These summaries describe the engineering scope without identifying customers or protected project material.</p>
+      </div>
+      <div class="project-text-grid">
+        <article class="project-text-card reveal">
+          <span class="card-index">01</span>
+          <p class="portfolio-type" data-i18n="project1Type">THERMAL SYSTEMS</p>
+          <h3 data-i18n="project1Title">Industrial chiller development</h3>
+          <p data-i18n="project1Desc">Ground-up mechanical development of an industrial chiller, including component geometry, equipment structure, interfaces and manufacturing documentation. Structural checks were used alongside the CAD work so the design could be refined before fabrication.</p>
+          <div class="portfolio-tags"><span>CAD</span><span>FEA</span><span data-i18n="tagManufacturing">Manufacturing</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">02</span>
+          <p class="portfolio-type" data-i18n="project2Type">DATACENTER COOLING</p>
+          <h3 data-i18n="project2Title">High-density cooling architecture</h3>
+          <p data-i18n="project2Desc">A complete cooling concept for high-heat-load computing equipment, developed from system layout through detailed mechanical design. The work included structural and vacuum considerations, packaging constraints and the routing of thermal and fluid interfaces.</p>
+          <div class="portfolio-tags"><span>Thermal</span><span>CAD</span><span>Vacuum</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">03</span>
+          <p class="portfolio-type" data-i18n="project3Type">VACUUM EQUIPMENT</p>
+          <h3 data-i18n="project3Title">Vacuum process equipment &amp; test rigs</h3>
+          <p data-i18n="project3Desc">Mechanical design of vacuum vessels, integrated pumping hardware and supporting test equipment. The engineering focused on assembly strategy, service access, piping interfaces and the structural behaviour of components exposed to vacuum loading.</p>
+          <div class="portfolio-tags"><span>Vacuum</span><span>FEA</span><span>P&amp;ID</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">04</span>
+          <p class="portfolio-type" data-i18n="project4Type">MATERIAL HANDLING</p>
+          <h3 data-i18n="project4Title">Automated material transport system</h3>
+          <p data-i18n="project4Desc">Development of an automated transport concept built around a custom robot mounted on an AGV platform. The scope joined mechanical design, motion constraints, payload handling and automation requirements into one integrated system.</p>
+          <div class="portfolio-tags"><span>Robotics</span><span>AGV</span><span>Automation</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">05</span>
+          <p class="portfolio-type" data-i18n="project5Type">ROBOTIC PRODUCTION</p>
+          <h3 data-i18n="project5Title">Multi-robot assembly line simulation</h3>
+          <p data-i18n="project5Desc">A complete virtual production line combining factory layout, conveyors, human interaction and six industrial robots carrying out pick-and-place, painting and welding operations. Kinematics and sequencing were developed together so the cell could be evaluated as a system.</p>
+          <div class="portfolio-tags"><span>ABB</span><span>RobotStudio</span><span>Layout</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">06</span>
+          <p class="portfolio-type" data-i18n="project6Type">MECHATRONICS</p>
+          <h3 data-i18n="project6Title">Automated musical instrument</h3>
+          <p data-i18n="project6Desc">A mechatronic instrument built from the ground up, with custom mechanical parts, three stepper-driven axes and a Python translation layer converting MIDI commands into machine motion. The project combined CAD, prototyping, controls and software integration.</p>
+          <div class="portfolio-tags"><span>Python</span><span>Motion</span><span>3D Printing</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">07</span>
+          <p class="portfolio-type" data-i18n="project7Type">CFD / FEA</p>
+          <h3 data-i18n="project7Title">Aerodynamic &amp; flow-device optimisation</h3>
+          <p data-i18n="project7Desc">CFD-led development work across aerodynamic surfaces and compact flow devices, including wing concepts, ventilation hardware and valve geometry. Flow behaviour, pressure loss and structural constraints were used to guide geometry changes instead of relying on visual design alone.</p>
+          <div class="portfolio-tags"><span>CFD</span><span>FEA</span><span>Optimisation</span></div>
+        </article>
+
+        <article class="project-text-card reveal">
+          <span class="card-index">08</span>
+          <p class="portfolio-type" data-i18n="project8Type">PRODUCT DESIGN</p>
+          <h3 data-i18n="project8Title">Consumer &amp; specialist product development</h3>
+          <p data-i18n="project8Desc">Detailed product-design work ranging from premium consumer hardware to specialist mechanical devices. The emphasis was on packaging, material choice, manufacturability, assembly strategy and translating an early concept into a coherent set of production-ready parts.</p>
+          <div class="portfolio-tags"><span>SolidWorks</span><span data-i18n="tagDfM">DFM</span><span>Product</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="testimonials section-pad" id="testimonials">
+      <div class="testimonials-heading reveal">
+        <div>
+          <p class="eyebrow" data-i18n="testimonialsEyebrow">Client feedback</p>
+          <h2 data-i18n="testimonialsTitle">What clients say after the work is delivered.</h2>
+        </div>
+        <p class="testimonials-note" data-i18n="testimonialsNote">Client names below are pseudonyms used for privacy. Project titles are intentionally omitted.</p>
+      </div>
+
+      <div class="testimonial-grid">
+        <article class="testimonial-card reveal">
+          <div class="testimonial-rating" aria-label="5 out of 5"><span>★★★★★</span><b>5.0</b></div>
+          <blockquote>Successfully completed the requested work.</blockquote>
+          <div class="testimonial-client"><strong>Alex M.</strong><span data-i18n="privacyName">Name changed for privacy</span></div>
+        </article>
+
+        <article class="testimonial-card reveal">
+          <div class="testimonial-rating" aria-label="5 out of 5"><span>★★★★★</span><b>5.0</b></div>
+          <blockquote>excellent freelancer who exceeded expectations</blockquote>
+          <div class="testimonial-client"><strong>Daniel K.</strong><span data-i18n="privacyName">Name changed for privacy</span></div>
+        </article>
+
+        <article class="testimonial-card reveal">
+          <div class="testimonial-rating" aria-label="5 out of 5"><span>★★★★★</span><b>5.0</b></div>
+          <blockquote>Bogdan did his work very quickly and efficiently and helped us to get a better understand of potential and limitations of the robotic solution.</blockquote>
+          <div class="testimonial-client"><strong>Sofia R.</strong><span data-i18n="privacyName">Name changed for privacy</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="industries section-pad" id="industries">
+      <div class="section-heading compact reveal">
+        <p class="eyebrow" data-i18n="industriesEyebrow">Where it applies</p>
+        <h2 data-i18n="industriesTitle">Useful across products, components and fluid systems.</h2>
+      </div>
+      <div class="card-grid industries-grid">
+        <article class="mini-card reveal"><h3 data-i18n="industry1Title">Industrial equipment</h3><p data-i18n="industry1Desc">Housings, brackets, ducts, frames, fixtures and functional assemblies.</p></article>
+        <article class="mini-card reveal"><h3 data-i18n="industry2Title">Fluid systems</h3><p data-i18n="industry2Desc">Manifolds, channels, pressure-drop studies, fans and thermal paths.</p></article>
+        <article class="mini-card reveal"><h3 data-i18n="industry3Title">Product development</h3><p data-i18n="industry3Desc">Concept work, redesigns, failure investigation and engineering support.</p></article>
+        <article class="mini-card reveal"><h3 data-i18n="industry4Title">Prototyping support</h3><p data-i18n="industry4Desc">Use analysis early to reduce trial-and-error before physical testing.</p></article>
+      </div>
+    </section>
+
+    <section class="estimator section-pad" id="estimator">
+      <div class="section-heading reveal">
+        <p class="eyebrow" data-i18n="estimateEyebrow">Budget estimator</p>
+        <h2 data-i18n-html="estimateTitle">Get a fast <span class="text-outline">budget range.</span></h2>
+        <p class="estimator-intro" data-i18n="estimateIntro">A planning tool for early budgeting. Final pricing depends on geometry, scope, inputs and deliverables.</p>
+      </div>
+      <div class="estimator-shell reveal">
+        <div class="estimator-controls">
+          <div class="estimator-field">
+            <span class="field-label" data-i18n="estimateType">Type of work</span>
+            <div class="work-tabs" role="group" aria-label="Type of engineering work">
+              <button class="work-tab active" type="button" data-work="cad"><b data-i18n="estimateCad">CAD / Design</b><small data-i18n="estimateCadRate">from €20 / hour</small></button>
+              <button class="work-tab" type="button" data-work="simulation"><b data-i18n="estimateSim">Simulation</b><small data-i18n="estimateSimRate">from €45 / hour</small></button>
+            </div>
+          </div>
+          <div class="estimator-field">
+            <div class="slider-head"><span class="field-label" data-i18n="estimateHours">Estimated hours</span><output id="hoursOutput">20 h</output></div>
+            <input id="hoursSlider" class="hours-slider" type="range" min="1" max="200" value="20" step="1" aria-label="Estimated hours">
+            <div class="slider-scale"><span>1 h</span><span>200 h</span></div>
+          </div>
+          <div class="estimator-field">
+            <span class="field-label" data-i18n="estimateComplexity">Complexity</span>
+            <div class="complexity-tabs" role="group" aria-label="Project complexity">
+              <button type="button" data-factor="1" data-level="basic"><span data-i18n="estimateBasic">Basic</span><small>×1.00</small></button>
+              <button class="active" type="button" data-factor="1.25" data-level="standard"><span data-i18n="estimateStandard">Standard</span><small>×1.25</small></button>
+              <button type="button" data-factor="1.5" data-level="complex"><span data-i18n="estimateComplex">Complex</span><small>×1.50</small></button>
+            </div>
+          </div>
+          <div class="estimate-total">
+            <span data-i18n="estimateBudget">Indicative budget</span>
+            <strong id="estimateValue">€500</strong>
+            <small id="estimateRate">€20/h × 20 h × 1.25</small>
+          </div>
+          <p class="estimate-disclaimer" data-i18n="estimateDisclaimer">This is a rough budgeting aid, not a quotation. Simulation scope can change significantly with model preparation, meshing, boundary conditions and convergence requirements.</p>
+        </div>
+        <div class="estimator-visuals" aria-hidden="true">
+          <div class="estimate-visual active" data-estimate-visual="cad">
+            <svg viewBox="0 0 640 520">
+              <g class="calc-cad-grid" fill="none" stroke="currentColor"><path d="M80 100H560M80 180H560M80 260H560M80 340H560M80 420H560"/><path d="M120 70V450M220 70V450M320 70V450M420 70V450M520 70V450"/></g>
+              <g class="calc-cad-part" fill="none" stroke="currentColor"><path d="M166 366 L220 172 L424 136 L500 264 L442 392 L252 424 Z"/><circle cx="344" cy="286" r="74"/><circle cx="344" cy="286" r="30"/><path d="M220 172L252 424M424 136L442 392M166 366L500 264"/></g>
+              <g class="calc-cad-dims" fill="none" stroke="var(--red)"><path d="M158 450H500"/><path d="M135 170V425"/></g>
+              <text class="calc-label" x="270" y="478">CAD / DFM</text>
+            </svg>
+          </div>
+          <div class="estimate-visual" data-estimate-visual="simulation">
+            <svg viewBox="0 0 640 520">
+              <defs><radialGradient id="simHot"><stop offset="0" stop-color="var(--red)" stop-opacity=".46"/><stop offset="1" stop-color="var(--red)" stop-opacity="0"/></radialGradient></defs>
+              <ellipse cx="390" cy="250" rx="160" ry="150" fill="url(#simHot)"/>
+              <g class="calc-mesh" fill="none" stroke="currentColor"><path d="M124 386L196 162L390 126L520 250L452 406L258 430Z"/><path d="M196 162L258 430M390 126L452 406M124 386L520 250M196 162L452 406M390 126L258 430"/><path d="M196 162L332 272L390 126M124 386L332 272L258 430M520 250L332 272L452 406"/></g>
+              <g class="calc-flow" fill="none" stroke="var(--red)"><path d="M60 180C220 130 300 190 580 118"/><path d="M50 224C220 182 320 225 590 188"/><path d="M50 320C220 352 320 310 590 356"/><path d="M60 366C230 415 330 358 580 422"/></g>
+              <text class="calc-label" x="244" y="478">CFD / FEA</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="who section-pad" id="who-we-are">
+      <div class="who-grid">
+        <figure class="who-photo reveal">
+          <div class="who-photo-frame">
+            <img src="assets/bogdan-dirlosan.jpg" alt="Bogdan-Ioan Dîrloșan" loading="lazy" decoding="async">
+            <span class="who-photo-index" aria-hidden="true">01 / ENGINEERING LEAD</span>
+          </div>
+          <figcaption>
+            <strong>Bogdan-Ioan Dîrloșan</strong>
+            <span data-i18n="whoRole">Mechanical Design Engineer · CFD / FEA · Robotics &amp; Automation</span>
+          </figcaption>
+        </figure>
+
+        <div class="who-copy reveal">
+          <p class="eyebrow" data-i18n="whoEyebrow">Who we are</p>
+          <h2 data-i18n="whoTitle">Direct engineering ownership, from the first requirement to the final model.</h2>
+          <p class="who-lead" data-i18n="whoLead">DIRLOSAN is built around direct engineer-to-client communication. The technical work is led by Bogdan-Ioan Dîrloșan, a mechanical design engineer with a robotics background and a completed M.Sc. in Artificial Intelligence.</p>
+          <p data-i18n="whoBody">His experience covers full-lifecycle CAD design, industrial cooling equipment and machinery, CFD and FEA, manufacturing documentation, robotics and automation. He has worked from early client requirements through detailed models, drawings, simulation and production handoff.</p>
+
+          <div class="who-credentials" aria-label="Background and capabilities">
+            <div><span data-i18n="whoStudiesLabel">Studies</span><strong data-i18n="whoStudies">B.Sc. Robotics · M.Sc. Artificial Intelligence</strong></div>
+            <div><span data-i18n="whoCredential3Label">Core work</span><strong data-i18n="whoCredential3">CAD · CFD · FEA · Automation</strong></div>
+          </div>
+
+          <details class="who-more">
+            <summary data-i18n="whoMoreSummary">Additional credentials</summary>
+            <div class="who-more-grid">
+              <div><span data-i18n="whoCredential4Label">Certification</span><strong data-i18n="whoCredential4">Computer Vision · Udacity</strong></div>
+              <div><span data-i18n="whoCredential5Label">Certification</span><strong data-i18n="whoCredential5">CAD Certification</strong></div>
+              <div><span data-i18n="whoCredential6Label">Recognition</span><strong data-i18n="whoCredential6">Podium · Sonaca Factory Management</strong></div>
+            </div>
+            <div class="who-more-tools">
+              <span class="who-more-tools-label" data-i18n="whoToolsLabel">Engineering tools</span>
+              <div class="who-toolchain">
+                <span>SolidWorks</span><span>CATIA V5</span><span>Fusion 360</span><span>Ansys</span><span>Abaqus</span><span>Siemens TIA Portal</span><span>RobotStudio</span><span>Python</span><span>MATLAB</span>
+              </div>
+            </div>
+          </details>
+
+          <a class="button button-primary magnetic who-cta" href="#contact"><span data-i18n="whoCta">Discuss your project</span><i>↗</i></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about section-pad" id="about">
+      <div class="about-grid">
+        <div class="about-statement reveal">
+          <p class="eyebrow light">DIRLOSAN / Engineering &amp; Simulation</p>
+          <h2 data-i18n="aboutTitle">Good simulation is useful when it changes a design decision.</h2>
+        </div>
+        <div class="about-copy reveal">
+          <p data-i18n="aboutCopy">DIRLOSAN combines mechanical product design with CFD, FEA, robotics and automation experience. The work covers manufacturing-ready CAD, industrial machinery, cooling systems, simulation and client-facing engineering support.</p>
+          <div class="about-tags">
+            <span data-i18n="tagProduct">Product development</span><span data-i18n="tagFluid">Fluid dynamics</span><span data-i18n="tagStructural">Structural analysis</span><span data-i18n="tagAutomation">Robotics & automation</span>
+          </div>
+          <div class="skill-stack" aria-label="Engineering tools">
+            <div><b data-i18n="skillCad">CAD & design</b><span>SolidWorks · Catia V5 · Fusion 360 · AutoCAD</span></div>
+            <div><b data-i18n="skillSimulation">Simulation</b><span>Ansys · Abaqus · SolidWorks Simulation</span></div>
+            <div><b data-i18n="skillAutomation">Automation & analysis</b><span>Siemens TIA Portal · RobotStudio · Python · MATLAB</span></div>
+          </div>
+        </div>
+      </div>
+      <svg class="about-lines" viewBox="0 0 1600 580" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M-100 510 C250 300 450 590 780 420 S1250 270 1690 390"/>
+          <path d="M-100 540 C250 330 450 620 790 447 S1250 300 1690 420"/>
+          <path d="M-100 570 C250 360 450 650 800 474 S1250 330 1690 450"/>
+        </g>
+      </svg>
+    </section>
+
+    <section class="faq section-pad" id="faq">
+      <div class="section-heading compact reveal">
+        <p class="eyebrow" data-i18n="faqEyebrow">Questions clients ask</p>
+        <h2 data-i18n="faqTitle">The practical details before we start.</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary data-i18n="faq1Q">Can you start from a rough idea, sketch or incomplete CAD?</summary>
+          <p data-i18n="faq1A">Yes. Work can begin from an early concept, sketches, reference dimensions or an existing CAD model, depending on the stage of the project.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq2Q">Can you handle both the design and the simulation?</summary>
+          <p data-i18n="faq2A">Yes. Product design, CFD and FEA can be kept in one workflow so simulation findings can feed directly back into the geometry.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq3Q">What do you need from me to quote the work?</summary>
+          <p data-i18n="faq3A">A short description of the problem, any available drawings or CAD, target performance, known loads or flow conditions, required deliverables and your preferred timeline are usually enough for an initial scope.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq4Q">Can the work be quoted as a fixed-price project?</summary>
+          <p data-i18n="faq4A">For clearly defined deliverables, fixed-price work is possible. Larger or evolving projects can be divided into milestones so scope and cost stay visible as the design develops.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq5Q">What files and deliverables can I receive?</summary>
+          <p data-i18n="faq5A">Depending on scope, deliverables can include native CAD, STEP files, manufacturing drawings, assemblies, BOMs, simulation reports, plots and the supporting engineering documentation agreed for the project.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq6Q">Can you work under an NDA or with confidential product data?</summary>
+          <p data-i18n="faq6A">If the project is confidential, mention that before sending sensitive files. NDA and information-handling requirements can be agreed before detailed project data is shared.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq7Q">Which CAD and simulation tools do you use?</summary>
+          <p data-i18n="faq7A">The toolset includes SolidWorks, Catia V5, Fusion 360 and AutoCAD for design, plus Ansys, Abaqus and SolidWorks Simulation for structural, thermal and fluid analysis.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq8Q">Can you work with my existing engineer, manufacturer or supplier?</summary>
+          <p data-i18n="faq8A">Yes. The work can be structured around an existing team, with design files, drawings and engineering decisions prepared for review or handoff to manufacturing.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq9Q">Do you work with international clients remotely?</summary>
+          <p data-i18n="faq9A">Yes. The engineering workflow is suitable for remote projects, with requirements, CAD, reviews and deliverables handled digitally.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq10Q">How are revisions and scope changes handled?</summary>
+          <p data-i18n="faq10A">The initial scope should define the expected deliverables and review points. If the requirements change materially, the impact on schedule and cost can be agreed before the additional work proceeds.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq11Q">Can you help if a design is failing or underperforming?</summary>
+          <p data-i18n="faq11A">Yes. Existing designs can be reviewed to identify likely structural, thermal, flow or manufacturability issues, then tested through targeted analysis and design changes.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary data-i18n="faq12Q">Are CFD or FEA results the same as physical certification?</summary>
+          <p data-i18n="faq12A">No. Simulation is an engineering decision tool and depends on the model, assumptions, inputs and boundary conditions. Where certification or regulatory approval is required, the relevant physical tests and authorised certification process still apply.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="contact section-pad" id="contact">
+      <div class="contact-copy reveal">
+        <p class="eyebrow" data-i18n="contactEyebrow">Have an engineering problem?</p>
+        <h2 data-i18n="contactTitle">Let’s work through it.</h2>
+        <p data-i18n="contactIntro">Tell us what you’re designing, what isn’t working, or what you need to validate.</p>
+      </div>
+      <form class="contact-form reveal" id="contactForm" action="mailto:dirlosan@bdengineering.com" method="post" enctype="text/plain">
+        <label><span data-i18n="formName">Name</span><input type="text" name="name" autocomplete="name" required></label>
+        <label><span data-i18n="formEmail">Email</span><input type="email" name="email" autocomplete="email" required></label>
+        <label class="wide"><span data-i18n="formMessage">What are you working on?</span><textarea name="message" rows="3" required></textarea></label>
+        <button class="button button-primary magnetic" type="submit"><span data-i18n="formSend">Send enquiry</span><i>↗</i></button>
+        <p class="form-note" id="formNote" data-i18n="formNote">Submitting opens your email app with the message addressed to dirlosan@bdengineering.com.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <a class="footer-brand" href="#top"><span class="logo-plate"><img src="assets/dirlosan-logo-transparent.png" alt="DIRLOSAN"></span></a>
+    <p data-i18n="footerLine">Engineering and Simulation</p>
+    <a href="#top" class="back-top magnetic" data-i18n="backTop">Back to top ↑</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
